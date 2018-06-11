@@ -1,0 +1,46 @@
+spring:
+  jpa:
+    properties:
+      jadira:
+        usertype:
+          autoRegisterUserTypes: true
+    show-sql: false
+  datasource:
+    url: # set this through env vars
+    username: # set this through env vars
+    password: # set this through env vars
+    driverClassName: oracle.jdbc.driver.OracleDriver
+    jmx-enabled: true
+    tomcat:
+      initial-size: 10
+      min-idle: 10
+      maxActive: 500
+      max-idle: 100
+      validation-query: SELECT 1 FROM DUAL
+      # validate connections before borrowing them
+      test-on-borrow: true
+      # once validated, connections will not be validated again until this interval expires
+      validation-interval: 30000
+      jmx-enabled: true
+
+HYSTRIX_EXECUTION_TIMEOUT: 30000
+
+hystrix:
+  stream:
+    queue:
+      enabled: ${CIRCUIT_BREAKER_ENABLED:false}
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: ${HYSTRIX_EXECUTION_TIMEOUT}
+
+logging:
+ config: classpath:log4j2.xml
+ level:
+   com.foresee: TRACE
+
+okta:
+  url: # set this through env vars
+  api-token: # set this through env vars
